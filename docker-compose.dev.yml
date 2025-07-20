@@ -1,0 +1,104 @@
+version: '3.8'
+name: dev-blog-4
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo
+    container_name: blog-mongodb
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - "27017:27017"  
+    networks:
+      - blog-network
+    restart: unless-stopped
+
+  # Backend API Server
+  backend:
+    build:
+      context: ./blog-backend
+      dockerfile: Dockerfile.dev
+    container_name: blog-backend
+    env_file:
+      - ./blog-backend/.env.example
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/blogdb
+    ports:
+      - "5050:5050"
+      - "9229:9229"  # Only backend needs debug port
+    depends_on:
+      - mongodb
+    networks:
+      - blog-network
+    restart: unless-stopped
+    volumes:
+      - ./blog-backend:/app  # Optional: for development hot reload
+      - /app/node_modules    # Prevent overwriting node_modules
+
+  # Admin Dashboard
+  admin:
+    build:
+      context: ./blog-admin
+      dockerfile: Dockerfile.dev
+    container_name: blog-admin
+    ports:
+      - "3001:3001"  # or nginx serves on port 80 for prod
+    depends_on:
+      - backend
+    networks:
+      - blog-network
+    restart: unless-stopped
+    volumes:
+      - ./blog-admin:/app  # Optional: for development hot reload
+      - /app/node_modules    # Prevent overwriting node_modules
+    env_file:
+      - ./blog-admin/.env.example
+
+  # Client/Public Blog
+  client:
+    build:
+      context: ./blog-client
+      dockerfile: Dockerfile.dev
+    container_name: blog-client
+    ports:
+      - "3002:3002"  # Assuming nginx serves on port 80
+    depends_on:
+      - backend
+    networks:
+      - blog-network
+    restart: unless-stopped
+    volumes:
+      - ./blog-client:/app  # Optional: for development hot reload
+      - /app/node_modules    # Prevent overwriting node_modules
+    env_file:
+      - ./blog-client/.env.example
+
+  # Database Seeder (runs once)
+  seeder:
+    build:
+      context: ./blog-backend
+      dockerfile: Dockerfile
+    container_name: blog-seeder
+    env_file:
+      - ./blog-backend/.env.example
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/blogdb
+    command: npm run seed
+    depends_on:
+      - mongodb
+    networks:
+      - blog-network
+    restart: "no"  # Only run once, don't restart
+    profiles:
+      - tools
+
+# Named volumes for data persistence
+volumes:
+  mongodb_data:
+    driver: local
+
+# Custom network for service communication
+networks:
+  blog-network:
+    driver: bridge

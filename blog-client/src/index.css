@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .fade-in-component {
+    animation: fadeInUp 1s ease-out forwards;
+    animation-delay: var(--delay);
+    opacity: 0; /* Start hidden */
+  }
