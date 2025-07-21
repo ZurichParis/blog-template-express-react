@@ -18,6 +18,7 @@ const io = new Server(server, {
     methods: ["GET", "POST"]
   }
 })
+console.log("allowed Origins", allowedOrigins)
 
 const PORT = process.env.PORT || 5050
 
