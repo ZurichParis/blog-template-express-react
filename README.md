@@ -18,7 +18,10 @@ This is a blog platform that allows:
 - **blog-client**: Public-facing React blog interface (port 3002)
 - **blog-admin**: Administrative React dashboard (port 3001)  
 - **blog-backend**: Express.js API server with Socket.IO (port 5050)
-- **MongoDB**: Database for storing blog posts and admin data
+- **MongoDB**: Database for storing blog posts and admin data (port 27017)
+
+## Furthur to improve
+- **Security**: Login password encrypt (dev version is sending plein text)
 
 ## Prerequisites
 
