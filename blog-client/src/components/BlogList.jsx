@@ -87,8 +87,26 @@ function BlogList() {
     }
   }, [selectedBlog])
 
-  // Set up WebSocket connection
-  useWebSocket('http://localhost:5050', handleWebSocketMessage)
+  const convertToWebSocketURL = (apiUrl) => {
+    // Remove /api suffix if it exists
+    const baseUrl = apiUrl.replace(/\/api$/, '');
+    
+    // Convert HTTP protocols to WebSocket protocols
+    if (baseUrl.startsWith('https://')) {
+      return baseUrl.replace('https://', 'wss://');
+    } else if (baseUrl.startsWith('http://')) {
+      return baseUrl.replace('http://', 'ws://');
+    }
+    
+    return baseUrl; // fallback
+  };
+  
+  // Usage:
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5050/api';
+  const WEBSOCKET_URL = convertToWebSocketURL(API_URL);
+  useWebSocket(WEBSOCKET_URL, handleWebSocketMessage);
+  console.log('Original API_URL:', API_URL);
+
 
   useEffect(() => {
     if (selectedTheme === 'all') {
