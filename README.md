@@ -2,6 +2,8 @@
 
 A full-stack blog platform with real-time updates, built with React, Express.js, and MongoDB. The application consists of a public blog interface, an admin dashboard for content management, and a RESTful API backend with WebSocket support for live updates.
 
+CHECK DEMO CLIENT PAGE HERE: https://blog-template-express-react.vercel.app/
+
 ## What This Application Is For
 
 This is a blog platform that allows:
