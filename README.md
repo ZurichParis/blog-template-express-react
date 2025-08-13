@@ -37,7 +37,7 @@ This is a blog platform that allows:
 
 ### 1. Clone and Setup
 ```bash
-git clone <repository-url>
+git clone https://github.com/ZurichParis/blog-template-express-react.git
 cd blog-template-express-react
 ```
 
@@ -59,11 +59,13 @@ cp blog-admin/.env.example blog-admin/.env
 ```
 
 ### 3. Start All Services
-```bash
-# Start all services (MongoDB, backend, admin, client)
-docker compose -f docker-compose.dev.yml up -d
 
+# Start all services (MongoDB, backend, admin, client)
+```bash
+docker compose -f docker-compose.dev.yml up -d
+```
 # Seed the database with sample data and admin account
+```bash
 docker compose -f docker-compose.dev.yml --profile tools up seeder
 ```
 
@@ -74,8 +76,8 @@ docker compose -f docker-compose.dev.yml --profile tools up seeder
 - **Backend Debugger**: http://localhost:9229
 
 ### 5. Stop Services
-```bash
 # Stop all services
+```bash
 docker compose -f docker-compose.dev.yml stop
 ```
 
@@ -83,15 +85,14 @@ docker compose -f docker-compose.dev.yml stop
 
 ### 1. Install Dependencies
 ```bash
-# Install backend dependencies
 cd blog-backend
 npm install
-
-# Install client dependencies  
+```
+```bash
 cd ../blog-client
 npm install
-
-# Install admin dependencies
+```
+```bash
 cd ../blog-admin
 npm install
 ```
@@ -103,20 +104,24 @@ Ensure MongoDB is running locally on port 27017, or update the `MONGODB_URI` in 
 Copy and edit the `.env.example` files as described in the Docker setup section.
 
 ### 4. Start Services
-```bash
 # Terminal 1: Start backend
+```bash
 cd blog-backend
 npm run dev
+```
 
 # Terminal 2: Seed database (run once)
+```bash
 cd blog-backend  
 npm run seed
-
+```
 # Terminal 3: Start client
+```bash
 cd blog-client
 npm run dev
-
+```
 # Terminal 4: Start admin
+```bash
 cd blog-admin
 npm run dev
 ```
